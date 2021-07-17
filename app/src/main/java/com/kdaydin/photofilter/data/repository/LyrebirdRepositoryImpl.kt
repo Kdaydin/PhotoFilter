@@ -26,8 +26,7 @@ class LyrebirdRepositoryImpl(
         dispatcher: CoroutineDispatcher,
         apiCall: suspend () -> T,
         actionOnServiceError: (() -> Unit)? = null,
-        isAsync: Boolean? = false,
-        isUnnecessaryTimeoutControl: Boolean = false
+        isAsync: Boolean? = false
     ): UseCaseResult<T> {
         return withContext(dispatcher) {
 
@@ -75,13 +74,5 @@ class LyrebirdRepositoryImpl(
                 }
             }
         }
-    }
-
-
-    private fun runOnUiThread(runnable: Runnable) {
-        if (Thread.currentThread() == Handler(Looper.getMainLooper()).looper.thread)
-            runnable.run()
-        else
-            Handler(Looper.getMainLooper()).post(runnable)
     }
 }
