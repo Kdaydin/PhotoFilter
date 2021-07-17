@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="overlay"
             type="com.kdaydin.photofilter.data.entities.Overlay" />
+
         <variable
             name="clickListener"
             type="com.kdaydin.photofilter.ui.listener.OverlaySelectionListener" />
@@ -13,41 +16,41 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onOverlaySelected(overlay)}"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:onClick="@{() -> clickListener.onOverlaySelected(overlay)}">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/ivOverlayCard"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:clickable="false"
-            app:layout_constraintDimensionRatio="1:1"
             android:duplicateParentState="true"
             app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvOverlayName"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/tvOverlayName"
             app:strokeColor="@color/color_overlay_border"
-            app:strokeWidth="1.25dp">
+            app:strokeWidth="2dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivOverlay"
+                imageUrl="@{overlay.overlayPreviewIconUrl}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="false"
+                android:duplicateParentState="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                imageUrl="@{overlay.overlayPreviewIconUrl}"
-                android:duplicateParentState="true"
                 tools:src="@mipmap/ic_launcher" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -56,14 +59,14 @@
             style="@style/LatoRegular.OverlayTextColor.14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:clickable="false"
             android:duplicateParentState="true"
-            android:layout_marginTop="12dp"
             android:maxLines="1"
             android:text="@{overlay.overlayName}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivOverlayCard"
             tools:text="FX-1" />
 

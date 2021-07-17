@@ -11,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/primary_700">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -28,7 +29,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:onClick="@{()->viewModel.onCloseApp()}"
+                    android:src="@drawable/ic_outline_close_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -38,19 +40,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:src="@android:drawable/ic_menu_save"
+                    android:onClick="@{()->viewModel.onSavePhoto()}"
+                    android:src="@drawable/ic_outline_done_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.kdaydin.photofilter.ui.customViews.overlay.OverlayViewNew
+        <com.kdaydin.photofilter.ui.customViews.overlay.OverlayView
             android:id="@+id/overlayView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/rvOverlays"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBar" />
 

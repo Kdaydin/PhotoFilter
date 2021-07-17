@@ -25,7 +25,6 @@ class FilterActivity : BaseActivity<FilterViewModel, ActivityFilterBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel?.getOverlays()
-
         viewModel?.overlayData?.observe(this) {
             if (it.isNullOrEmpty().not()) {
                 binding?.rvOverlays?.apply {
@@ -59,8 +58,8 @@ class FilterActivity : BaseActivity<FilterViewModel, ActivityFilterBinding>() {
                                         isFirstResource: Boolean
                                     ): Boolean {
                                         this@FilterActivity.runOnUiThread {
-                                                this@FilterActivity.binding?.overlayView?.clearOverlay()
-                                                this@FilterActivity.binding?.overlayView?.invalidate()
+                                            this@FilterActivity.binding?.overlayView?.clearOverlay()
+                                            this@FilterActivity.binding?.overlayView?.invalidate()
 
                                         }
                                         return false
@@ -72,11 +71,6 @@ class FilterActivity : BaseActivity<FilterViewModel, ActivityFilterBinding>() {
                 }
             }
         }
-
-        binding?.ivSave?.setOnClickListener {
-            if (verifyStoragePermissions(this) == true)
-                binding?.overlayView?.saveImage()
-        }
     }
 
     override fun getLayoutRes(): Int = R.layout.activity_filter
@@ -84,6 +78,15 @@ class FilterActivity : BaseActivity<FilterViewModel, ActivityFilterBinding>() {
     override fun getViewModelType(): FilterViewModel = get()
 
     override fun onStateChanged(state: VMState?) {
+        when (state) {
+            is FilterVMState.SavePhoto -> {
+                if (verifyStoragePermissions(this) == true)
+                    binding?.overlayView?.saveImage()
+            }
+            is FilterVMState.CloseApp -> {
+                finish()
+            }
+        }
     }
 
     // Storage Permissions
@@ -100,7 +103,7 @@ class FilterActivity : BaseActivity<FilterViewModel, ActivityFilterBinding>() {
      *
      * @param activity
      */
-    fun verifyStoragePermissions(activity: Activity?): Boolean? {
+    private fun verifyStoragePermissions(activity: Activity?): Boolean? {
         // Check if we have write permission
         val permission = ActivityCompat.checkSelfPermission(
             activity!!,

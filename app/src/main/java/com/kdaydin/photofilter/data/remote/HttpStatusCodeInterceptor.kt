@@ -1,7 +1,6 @@
 package com.kdaydin.photofilter.data.remote
 
 import androidx.annotation.NonNull
-import com.kdaydin.photofilter.data.remote.HttpStatusCodeException
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException

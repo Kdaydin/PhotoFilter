@@ -21,4 +21,12 @@ class FilterViewModel : BaseViewModel() {
             }
         }
     }
+
+    fun onSavePhoto() {
+        state.postValue(FilterVMState.SavePhoto())
+    }
+
+    fun onCloseApp() {
+        state.postValue(FilterVMState.CloseApp())
+    }
 }

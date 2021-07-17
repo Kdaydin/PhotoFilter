@@ -22,7 +22,7 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppCompa
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, getLayoutRes())
         viewModel = getViewModelType()
-        binding?.setVariable(BR.viewModel,viewModel)
+        binding?.setVariable(BR.viewModel, viewModel)
         binding?.lifecycleOwner = this
         viewModel.let { vm ->
             if (vm?.state?.hasObservers()?.not() == true) vm.state.observe(this, Observer {

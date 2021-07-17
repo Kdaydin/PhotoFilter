@@ -17,9 +17,7 @@ sealed class UseCaseResult<out T> {
         val type: String,
         val message: String,
         val action: (() -> Unit)? = null
-    ) : UseCaseResult<Nothing>() {
-
-    }
+    ) : UseCaseResult<Nothing>()
 
     class Error(ex: Throwable) : UseCaseResult<Nothing>()
 }
