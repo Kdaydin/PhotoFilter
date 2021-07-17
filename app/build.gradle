@@ -1,0 +1,127 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.kdaydin.photofilter"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    def envStorePass = System.getenv("STORE_PASS")
+    def envKeyAlias = System.getenv("KEY_ALIAS")
+    def envKeyPass = System.getenv("KEY_PASS")
+    def keystoreProperties = new Properties()
+    if (rootProject.file('local.properties').exists()) {
+        rootProject.file('local.properties').withInputStream {
+            stream -> keystoreProperties.load(stream)
+        }
+    }
+
+    def getStorePass = { ->
+        def storePass = keystoreProperties.containsKey("storepass") ? keystoreProperties.getProperty("storepass") : envStorePass
+        return storePass
+    }
+
+    def getKeyAlias = { ->
+        def keyAlias = keystoreProperties.containsKey("keyalias") ? keystoreProperties.getProperty("keyalias") : envKeyAlias
+        return keyAlias
+    }
+
+    def getKeyPass = { ->
+        def keyPass = keystoreProperties.containsKey("keypass") ? keystoreProperties.getProperty("keypass") : envKeyPass
+        return keyPass
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("FotoFilter.jks")
+            storePassword getStorePass()
+            keyAlias getKeyAlias()
+            keyPassword getKeyPass()
+        }
+
+    }
+    buildTypes {
+        release {
+            lintOptions {
+                disable 'MissingTranslation'
+                checkReleaseBuilds false
+                abortOnError false
+            }
+            minifyEnabled false
+            debuggable false
+            signingConfig signingConfigs.release
+            buildConfigField 'boolean', 'DEVELOPMENT', 'false'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            buildConfigField 'boolean', 'DEVELOPMENT', 'true'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "type"
+    productFlavors {
+        DEV {
+            applicationIdSuffix ".dev"
+            dimension "type"
+        }
+
+        PROD {
+            dimension "type"
+        }
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        dataBinding = true
+    }
+}
+
+dependencies {
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    // Retrofit as our REST service
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.3.1'
+    // Koin for the dependencies injections
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // Coroutines for asynchronous calls (and Deferred’s adapter)
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.coroutineVersion"
+    // Coroutines - Deferred adapter
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+}
